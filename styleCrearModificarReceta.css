@@ -1,0 +1,149 @@
+main > form{    /*Formato del formulario en sí*/
+    width: 98%;
+    margin: auto;
+    margin-top: 1%;
+    margin-bottom: 1%;
+    background-color: rgb(196, 245, 106);
+    padding: 2% 0%;
+}
+
+    /*Formato para los labels, de forma que todos los inputs queden alineados respecto al eje Y*/
+
+    main > form > .createModifyBlock > label{
+        width: 35%;
+        display: inline-block;
+        font-weight: bold;
+        text-align: right;
+
+    }
+
+    main > form > .createModifyBlock > p{
+        width: 98%;
+        margin: 1% auto;
+        text-align: center;
+    }
+
+    main > form > .createModifyBlock > input[type="submit"]{
+        margin: 2%;
+    }
+
+    /*Añadimos distancia al input text de los ingredientes*/
+    main > form > .createModifyBlock > #ingredients{
+        width: 40%;
+    }
+
+main span{  /*Las partes que están en negrita*/
+    font-weight: bold;
+}
+
+/*Formato de los mensajes de error*/
+.error{
+    color: red;
+}
+
+/*Formato del mensaje que nos indica las imágenes de la receta*/
+#imagesOfRecipe{
+    text-align: left;
+    margin:2%;
+    margin-bottom: 1%;
+}
+
+/*Formato del contenedor que almacena todo lo relacionado con las imágenes*/
+
+.containerImages{   /*Contenedor de las imágenes y los botones para eliminarlos*/
+    width: 95%;
+    margin: auto;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    padding: 1%;
+    border: solid 3px black;
+    text-align: center;
+    margin-bottom: 2%;
+}
+
+.containerImages > .showImages{   /*Formato de los contenedores imagen+botón*/
+    width: 21%;
+    margin-bottom: 1%;
+
+}
+
+.containerImages > .showImages > img{ /*Formato de las imágenes*/
+    width: 100%;
+}
+
+.buttonBlock{
+    margin-bottom: 2%;
+}
+
+#imagesToIntroduce{
+    display: inline-block;
+    margin: 2%;
+}
+#photosContainer, #photosContainer > #resultAJAX{   /*Contenedor que almacena las fotos en el directiorio temporal*/
+    border: solid 3px black;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    width: 90%;
+    margin:auto;
+    text-align: center;
+}
+
+#photosContainer > #resultAJAX{
+    width: 100%;
+    border:none;
+}
+
+
+
+#photosContainer  .photoInputBlock{    /*Bloques foto-input*/
+    width: 28%;
+    margin: 2%;
+}
+
+
+#photosContainer > .photoInputBlock > img, #photosContainer > #resultAJAX > .photoInputBlock > img{
+    width: 100%;
+}
+
+#author{
+    margin-bottom: 1%;
+}
+
+.submitBlock{
+    display: flex;
+    flex-direction: row;
+    width: 30%;
+    margin: auto;
+    justify-content: space-around;
+}
+
+
+/*----------------------------------------------------------- MEDIAS ----------------------------------------------------*/
+@media(max-width:800px){
+    main > form > .createModifyBlock > label{
+        width: 80%;
+        text-align: left;
+    }
+
+    main > form > * {
+        margin: 2%;
+    }
+
+    #photosContainer > .photoInputBlock, #photosContainer > #resultAJAX > .photoInputBlock{    /*Bloques foto-input*/
+    width: 80%;
+    }
+}
+
+@media(max-width:500px){
+    #describe, #steps{
+        width: 90%;
+    }
+
+    #uploadPhotos{
+        width:90%;
+    }
+}

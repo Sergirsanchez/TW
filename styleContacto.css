@@ -1,0 +1,206 @@
+main > *{   /*Con esto centramos todos los elementos al cenrtro*/
+    margin: auto;
+    font-style: italic;
+}
+
+main > h1{  /*Formato del mensaje de bienvenida*/
+    font-size: 300%;
+    width: 25%;
+    padding-right: 1%;
+    text-align: center;
+    font-style: normal;
+    background-color: rgb(188, 231, 107);
+}
+
+main > img{ /*Formato de los gifs*/
+    width: 20%;
+    margin-top: 2%;
+    margin-bottom: 2%;
+}
+
+main > .info{   /*Formato de la información*/
+    display: flex;
+    width: 40%;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    background-color: rgb(203, 236, 142);
+    margin-bottom: 2%;
+}
+
+    /*Formato de cada uno de los elementos*/
+    main > .info > p{
+        margin: 2%;
+        width: 45%;
+    }
+
+main span{
+    font-weight: bold;
+}
+
+/*FAQ*/
+main > .FAQ{
+    width: 60%;
+    background-color: rgb(203, 236, 142);
+    margin-bottom: 3%; 
+}
+    /*Formato de los párrafos*/
+    main > .FAQ > p{
+        margin: 2% auto;
+        text-align: center;
+        width: 95%;
+    }
+
+    /*Formato especial para el título*/
+
+    main > .FAQ > p:first-of-type{
+        font-size: x-large;
+    }
+
+    /*Contenedor donde se encuentran los comentarios*/
+    main > .FAQ > .commentContainer{
+        width: 80%;
+        border: solid 1px black;
+        margin: auto;
+        overflow-y: scroll;
+        margin-bottom: 2%;
+        max-height: 300px;
+    }
+
+        /*Comentarios*/
+        main > .FAQ > .commentContainer > .comment{
+            width: 80%;
+            margin: 2% auto;
+            background-color: rgb(188, 231, 107);
+
+        }
+
+        /*Comentarios*/
+        main > .FAQ > .commentContainer > .comment > p:nth-of-type(1),p:nth-of-type(2){
+            display: inline-block;
+        }
+
+        /*Comentarios*/
+        main > .FAQ > .commentContainer > .comment > p:first-child{
+            margin: 2% 0% 2% 2%;
+        }
+
+        /*Comentarios*/
+        main > .FAQ > .commentContainer > .comment > p:nth-of-type(3),p:last-of-type{
+            margin-left: 2%;
+            padding-bottom: 2%;
+            width: 90%;
+            word-wrap: break-word;
+        }
+    
+    /*Contenedor del formulario*/
+    main > .FAQ > .FAQForm{
+        width: 80%;
+        margin: auto;
+        border: solid 1px black;
+        margin-bottom: 2%;
+    }
+    
+    /*Formato de los elementos de dentro del formulario*/
+    main > .FAQ > .FAQForm > form > *{
+        width: 95%;
+        margin: 2% auto;
+        padding: 1%;
+    }
+
+    main > .FAQ > .FAQForm > form > .block{
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        margin: 2% auto;
+    }
+
+    main > .FAQ > .FAQForm > form > .block > label{
+        display: inline-block;
+        width: 40%;
+        text-align: right;
+        margin-right: 2%;
+    } 
+
+    main > .FAQ > .FAQForm > form > .block > textarea{
+        width: 50%;
+    } 
+
+    main > .FAQ > .FAQForm > form > .block > p{
+        width: 98%;
+        margin: auto;
+        text-align: center;
+    } 
+    
+    
+    main > .FAQ > .FAQForm > form > .block:last-of-type >  *{
+        display: block;
+        margin: 2% auto;
+    }
+
+    /*Formato de los mensajes de error*/
+    .error{
+        color: red;
+    }
+
+    main > .FAQ > .FAQForm > #notChecked >span:first-of-type{ /* Formato del mensaje que avisa de los campos obligatorios*/
+        display: block;
+        margin: 2% auto;
+    }
+
+/*------------------------------------------------MEDIAS (Para hacer la web adaptable) --------------------------------------------*/
+@media(max-width:1440px){
+    main > h1{ 
+        font-size:250%;
+        width: 30%;
+    }
+
+    main > img{
+        width: 25%;
+    }
+
+    main > .info > p{
+        width: 95%;
+        text-align: center;
+    }
+
+    main > .FAQ > .FAQForm > form > .block > textarea{
+        width: 80%;
+    }
+}
+
+@media(max-width:1100px){
+    main > h1{  
+        font-size:200%;
+        width: 35%;
+    }
+    main > img{
+        width: 30%;
+    }
+}
+
+
+@media(max-width: 720px){
+    main > img{
+        width: 60%;
+    }
+
+    main > .info{
+        width: 70%;
+    }
+
+    main > .FAQ{
+        width: 90%;
+    } 
+}
+
+@media(max-width: 500px){
+    main > h1{  
+        width: 50%;
+    }
+
+    #author, #email, #phone{    /*campo de texto con el nombre del autor, su email y su número*/
+        width: 90%;
+    }
+}

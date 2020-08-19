@@ -1,0 +1,23 @@
+#formDeleteDB, #formRestoreDB{  /*Formulario para eliminar la base de datos*/
+    border:solid 1px black;
+    width: 70%;
+    margin: auto;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    padding: 3%;
+    background-color: rgb(171, 224, 71);
+
+}
+
+#formDeleteDB > p, #formRestoreDB > label, #formRestoreDB > p, #formRestoreDB > input[type="file"]{
+    width: 98%;
+    text-align: center;
+
+}
+
+#formRestoreDB > p{
+    font-weight: bold;
+    color:red;
+}

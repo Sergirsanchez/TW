@@ -1,0 +1,18 @@
+form{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+form > *:not(p){
+    margin: 2% auto;
+}
+
+form > img{
+    width: 50%;
+}
+
+form > p{   /*Lo añadimos para que el botón se vaya debajo de la imagen*/
+    width: 100%;
+}
