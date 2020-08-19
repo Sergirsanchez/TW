@@ -1,0 +1,175 @@
+DROP TABLE categorias;
+
+CREATE TABLE `categorias` (
+  `receta_id` int(11) NOT NULL,
+  `categorias_id` int(11) NOT NULL,
+  PRIMARY KEY (`receta_id`,`categorias_id`),
+  KEY `categorias_id` (`categorias_id`),
+  CONSTRAINT `categorias_ibfk_1` FOREIGN KEY (`receta_id`) REFERENCES `recetas` (`id`),
+  CONSTRAINT `categorias_ibfk_2` FOREIGN KEY (`categorias_id`) REFERENCES `listacategorias` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+INSERT INTO categorias VALUES("48","205");
+INSERT INTO categorias VALUES("48","206");
+INSERT INTO categorias VALUES("48","207");
+INSERT INTO categorias VALUES("49","208");
+INSERT INTO categorias VALUES("51","208");
+INSERT INTO categorias VALUES("49","209");
+INSERT INTO categorias VALUES("49","210");
+INSERT INTO categorias VALUES("50","215");
+INSERT INTO categorias VALUES("50","216");
+INSERT INTO categorias VALUES("50","217");
+INSERT INTO categorias VALUES("50","218");
+INSERT INTO categorias VALUES("51","220");
+INSERT INTO categorias VALUES("45","221");
+INSERT INTO categorias VALUES("45","222");
+INSERT INTO categorias VALUES("45","223");
+
+
+
+DROP TABLE comentarios;
+
+CREATE TABLE `comentarios` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `idusuario` int(11) DEFAULT NULL,
+  `idreceta` int(11) DEFAULT NULL,
+  `comentario` text,
+  `fecha` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `idusuario` (`idusuario`),
+  KEY `idreceta` (`idreceta`),
+  CONSTRAINT `comentarios_ibfk_1` FOREIGN KEY (`idusuario`) REFERENCES `usuarios` (`id`),
+  CONSTRAINT `comentarios_ibfk_2` FOREIGN KEY (`idreceta`) REFERENCES `recetas` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+
+
+DROP TABLE fotos;
+
+CREATE TABLE `fotos` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `idreceta` int(11) DEFAULT NULL,
+  `fichero` varchar(200) DEFAULT NULL,
+  `miniatura` blob,
+  PRIMARY KEY (`id`),
+  KEY `idreceta` (`idreceta`),
+  CONSTRAINT `fotos_ibfk_1` FOREIGN KEY (`idreceta`) REFERENCES `recetas` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=78 DEFAULT CHARSET=latin1;
+
+INSERT INTO fotos VALUES("59","45","tomatosoup0.jpg","");
+INSERT INTO fotos VALUES("60","45","tomatosoup1.jpg","");
+INSERT INTO fotos VALUES("64","48","chicken0.jpg","");
+INSERT INTO fotos VALUES("65","49","cod1.jpg","");
+INSERT INTO fotos VALUES("66","49","cod3.jpg","");
+INSERT INTO fotos VALUES("67","49","cod2.jpg","");
+INSERT INTO fotos VALUES("68","49","cod7.jpg","");
+INSERT INTO fotos VALUES("69","49","cod5.jpg","");
+INSERT INTO fotos VALUES("70","49","cod6.jpg","");
+INSERT INTO fotos VALUES("71","49","cod4.jpg","");
+INSERT INTO fotos VALUES("72","50","image0.jpg","");
+INSERT INTO fotos VALUES("73","50","image3.jpg","");
+INSERT INTO fotos VALUES("74","50","image4.jpg","");
+INSERT INTO fotos VALUES("75","50","image1.jpg","");
+INSERT INTO fotos VALUES("76","50","image5.jpg","");
+INSERT INTO fotos VALUES("77","51","russiansalad0.jpeg","");
+
+
+
+DROP TABLE listacategorias;
+
+CREATE TABLE `listacategorias` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=224 DEFAULT CHARSET=latin1;
+
+INSERT INTO listacategorias VALUES("205","Pollo");
+INSERT INTO listacategorias VALUES("206","Sencilla");
+INSERT INTO listacategorias VALUES("207","Rico Rico");
+INSERT INTO listacategorias VALUES("208","Rápida");
+INSERT INTO listacategorias VALUES("209","Bacalao");
+INSERT INTO listacategorias VALUES("210","Deliciosa");
+INSERT INTO listacategorias VALUES("215","Arroz");
+INSERT INTO listacategorias VALUES("216","Cena");
+INSERT INTO listacategorias VALUES("217","Queso");
+INSERT INTO listacategorias VALUES("218","Fácil");
+INSERT INTO listacategorias VALUES("219","Rápida");
+INSERT INTO listacategorias VALUES("220","Fresca");
+INSERT INTO listacategorias VALUES("221","Tiempo medio");
+INSERT INTO listacategorias VALUES("222","Sopa");
+INSERT INTO listacategorias VALUES("223","Tomate");
+
+
+
+DROP TABLE logging;
+
+CREATE TABLE `logging` (
+  `fecha` datetime DEFAULT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `descripcion` varchar(200) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+INSERT INTO logging VALUES("2020-08-19 17:23:42","1","El admin admin admin acaba de acceder al sistema");
+
+
+
+DROP TABLE recetas;
+
+CREATE TABLE `recetas` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `idautor` int(11) DEFAULT NULL,
+  `nombre` varchar(200) DEFAULT NULL,
+  `descripcion` text,
+  `ingredientes` text,
+  `preparacion` text,
+  PRIMARY KEY (`id`),
+  KEY `idautor` (`idautor`),
+  CONSTRAINT `recetas_ibfk_1` FOREIGN KEY (`idautor`) REFERENCES `usuarios` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=52 DEFAULT CHARSET=latin1;
+
+INSERT INTO recetas VALUES("45","53","Sopa de tomate","Me encanta comer verduras de cualquier forma y preparar con ellas una crema o sopa me encanta en dos momentos concretos del año: por un lado las frías durante los meses más calurosos para comer algo muy refrescante, rápido de preparar y saludable, y por otro lado bien calientes para los meses más fríos.\n\nEsta receta de sopa de tomate es muy fácil de preparar y lo mejor de todo es que sirve para cualquier estación porque está riquísima caliente, tibia o incluso bien fría. Va repleta de verduras, se prepara de forma muy sencilla y a mi me encanta incluir un poco de albahaca para potenciar su sabor, además de servirla con más albahaca, queso feta y un chorrito de un buen aceite de oliva virgen extra.\n\n\n\nMuy sabrosa y de textura queda cremosa aunque ligera ya que se trata de una sopa. Si te sobra o si la preparas en gran cantidad siempre puedes congelarla y así tenerla a mano cuando más te apetezca. Lo ideal es aprovechar la temporada de tomates en verano aunque si encuentras en cualquier momento unos tomates sabrosos y maduros, no dudes en comprarlos y prepararla.","800 gr de tomates maduros, 2 dientes de ajo, 1/2 cebolla mediana, 200 ml de caldo de verduras casero o agua, 1 zanahoria mediana, 1 cucharada sopera de harina de trigo, 4 hojas de albahaca fresca, 1/2 cucharadita de postre de azúcar (opcional), Aceite de oliva, Sal, Pimienta negra recién molida","1.-Pela y pica muy finita la cebolla y haz lo mismo con los dientes de ajo. \n\n\n\n2.-Pela la zanahoria y córtala también en trocitos pequeños.\n\n\n\n3.-En una olla pon un poco de aceite y sal y echa la cebolla, los ajos y la zanahoria. Deja que se cocine todo junto a fuego medio removiendo de vez en cuando durante unos 5 minutos hasta que se empiecen a dorar. Si se pegan o doran las verduras, baja la temperatura del fuego y échales un poquito de agua. \n\n\n\n4.-Incorpora la harina y mézclala con las verduras durante 1 minuto. Esto ayudará a que la sopa después espese un poco más y cocinando la harina no sabrá cruda.\n\n\n\n5.-Los tomates deben utilizarse sin piel así que puedes optar por varios métodos. El más clásico es hacerles un corte en cruz e introducirlos en agua hirviendo durante 2-3 minutos y después pelarlos y triturarlos. En cambio a mi me gusta lavarlos, triturarlos en una batidora de vaso o robot y después colarlos bien para que no aporten ni pieles ni pepitas.\n\n\n\n6.-En todo caso, te recomiendo colar los tomates una vez triturados para evitar esas pieles y pepitas. \n\n\n\n7.-Incorpora los tomates a la olla junto con 4 o 5 hojas de albahaca picadas, un poco de sal, el azúcar y el caldo de verduras. \n\n\n\n8.-Sube el fuego para que esté alto y cuando la mezcla empiece a hervir baja el fuego para que esté suave y cocina 30 minutos.\n\n\n\n9.-Una vez lista la sopa de tomate, tritúrala y ya la tienes lista. Pruébala por si tienes que rectificarla de sal, y si la quieres más espesa tan solo tienes que echarla de nuevo en el cazo y calentarla hasta que tenga la textura que buscas. Igualmente si ha espesado demasiado siempre puedes añadir un poco de agua para aligerarla.\n\n\n\n10.-Para servirla y decorarla puedes poner unos cubitos de queso feta, fresco o mozzarella, albahaca fresca picada y un chorrito de aceite de oliva.");
+INSERT INTO recetas VALUES("48","53","Pollo al horno","Me encanta esta receta de pollo al horno con patatas y cebolla. Es muy fácil de hacer y no requiere de mucho esfuerzo. Pero sin duda, lo mejor de todo, es lo bien que queda. Lo que vamos a hacer va a ser cocinar este ave con su guarnición, todo a la vez, provocando que sus propios jugos se mezclen con esta guarnición y obteniendo una receta espectacular.","1 pollo entero o 4 muslos completos (cuartos traseros) , 4 patatas medianas , 4 cebollas medianas , Aceite de oliva ,  Sal , Pimienta , Tomillo seco","1.- Comenzamos pelando las patatas. Una vez peladas, las cortamos en rodajas finas, de no más de 1 centímetro de grosor. Después, las ponemos como base en una bandeja para horno. Pelamos también las cebollas y las cortamos en tiras finas. La ponemos sobre la patata y salpimentamos todo.\n\n\n\n2.- A continuación ponemos los muslos encima de las patatas y la cebolla. Le añadimos a todo un vaso de agua y un chorrete de aceite de oliva. Así quedará mas jugoso mientras se hornea. Nos aseguramos que en el fondo de la fuente, haya siempre humedad. Así la guarnición no se va a quemar. Salpimentamos y añadimos un buen pellizco de tomillo seco a cada muslo (o al pollo completo, si has elegido la pieza completa)\n\n\n\n3.- Metemos el pollo al horno a 220ºC si utilizas muslos. calor arriba y abajo. Dejamos hornear unos 30 minutos, hasta que se dore bien. Si utilizas un pollo entero, horneamos a 190ºC.\n\n\n\n4.- Cuando esté bien dorado, sacamos la bandeja del horno, le damos la vuelta a las piezas. Así, se cocinará el otro lado.\n\n\n\n5.- Inmediatamente después, volvemos a meter la bandeja dentro del horno. Finalmente dejamos cocinar aproximadamente el mismo tiempo, hasta que todo quede bien cocinado.");
+INSERT INTO recetas VALUES("49","53","Revuelto de bacalao","Admin vuelve, y esta vez para enseñarte una rápida y deliciosa receta de revuelto de bacalao, con la que seguro no dejarás indiferente a nadie y harás las delicias de tus comensales.","5 huevos, 50 gramos de bacalao desalado, 1 cebolleta, Cebollino","1.- Pica la cebolla.\n\n\n\n2.- Casca los huevos en un bol sin batir.\n\n\n\n3.-Pon una cazuela baja al fuego, agrega aceite y cuando esté caliente, incorpora el cebollino picado. Remueve.\n\n\n\n4.-Añade el bacalao desalado y desmigado en la cazuela y remueve bien.\n\n\n\n5.-Echa los huevos y deja cocinar unos segundos. Remueve. Apaga el fuego y sigue removiendo hasta que esté hecho. Echa el cebollino.\n\n\n\n6.-Sirve el revuelto de bacalao.");
+INSERT INTO recetas VALUES("50","53","Rissoto de calabaza y champiñones","El risotto es una técnica culinaria italiana que tiene su origen en el noroeste del país, concretamente en el Piamonte, donde tradicionalmente había abundancia de arroz. Cuando se cocina el risotto, el arroz cuece poco a poco con el resto de ingredientes del plato, no por separado. Verás como en este risotto de calabaza y champiñones uno de los distintivos es el queso parmesano, fundamental en cualquier variedad de risotto.","1 kilogramo de calabaza, 1 cebolleta, 120 g de champiñón, 60 g de parmesano, 1 chorro de aceite de oliva, 150 g de arroz blanco, 1 pizca de sal, 1 pizca de pimienta negra, 700 ml de caldo de verduras","1.- Si no tienes caldo de verduras, puedes preparar uno mientras elaborados el resto de la receta. Para ello, pon a hervir unas verduras en abundante agua. Puedes incluir cebolla, puerro, apio y zanahoria. Deja hervir durante media hora y pon un poco de sal.    \n\n                  \n\n2.- Mientras se hace el caldo de verduras, hamos un sofrito con la cebolleta picada y un poco de aceite de oliva. Dejamos que se cocine durante 4 minutos.  \n\n                \n\n3.- Agregamos la calabaza pelada y cortada en cuadraditos. Cuanto más pequeña la cortes antes se cocinará. Ponemos un poco de sal y pimiento negramolida y dejamos cocinar hasta que comience a ablandarse un poco, unos 20 minutos.    \n\n                \n\n4.- Es el momento de incorporar los champiñones fileteados y limpios a este risotto de calabaza. Dejamos cocinar durante 2-3 minutos.\n\n                \n\n5.- Echamos el arroz, rehogamos mezclando bien con el resto de ingredientes y cubrimos con el caldo de verduras. Vamos moviendo el risotto de calabaza y champiñones poco a poco y dejamos que reduzca el agua.   \n\n                \n\n6.- Lo importante del risotto es ir incorporando el caldo poco a poco y dejar que el arroz suelte el almidón y se cocine a fuego lento, pero siempre con líquido, sin que quede seco. El tiempo de cocción es de unos 20-22 minutos, dependiendo del tipo de arroz.  \n\n                \n\n7.- Cuando tengamos el arroz casi listo, ponemos un poco de parmesano rallado y movemos para que se integre su sabor.   \n\n                \n\n8.- Servimos el risotto de calabaza y champiñones con un poco más de parmesano rallado por encima.");
+INSERT INTO recetas VALUES("51","53","Ensaladilla Rusa","Admin te enseña cómo preparar la ensaladilla rusa. Es un entrante muy sencillo a base de patata y huevo cocido cortado en dados con guisantes, atún y acompañado de mayonesa. La ensaladilla rusa se puede preparar de un día para otro y a la hora de servirla bastará con añadirle la mayonesa.","2-3 patatas (450 g) , 4 zanahorias , 2 huevos , 20 aceitunas rellenas , 3 cucharadas de guisantes en conserva, 2 latas de atún en aceite (200 g), 2/4 de mayonesa casera, Sal , Perejil","1.- Pon las patatas (limpias y con piel) a cocer a fuego suave en una cazuela con agua fría. Pela las zanahorias y añádelas. Déjalas cocer (patatas y zanahorias) durante 25 minutos. A los 25 minutos de cocción,introduce los huevos, 1 cucharada de sal y deja cocer durante 10 minutos más.\n\n\n\n2.- Escurre el agua, deja que se temple todo. Reserva las zanahorias en un plato ypela las patatas y el huevo.\n\n\n\n3.- Pica la patata y el huevo en daditos. Corta las zanahorias en 4 cuartos a lo largo. Apila los trozos y córtalas perpendicularmente hasta conseguir trocitos pequeños.\n\n\n\n4.- Corta las aceitunas por la mitad y después finamente.\n\n\n\n5.- Pon la patata, el huevo, la zanahoria y las aceitunas en un cuenco grande, agrega los guisantes y el atún desmigado.Incorpora la mayonesa, mezcla suavemente. Prueba, pon a punto de sal y sirve. Adorna con una rama de perejil.");
+
+
+
+DROP TABLE usuarios;
+
+CREATE TABLE `usuarios` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(200) DEFAULT NULL,
+  `apellidos` varchar(300) DEFAULT NULL,
+  `email` varchar(200) DEFAULT NULL,
+  `foto` varchar(200) DEFAULT NULL,
+  `tipo` varchar(100) DEFAULT NULL,
+  `contraseña` varchar(300) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=60 DEFAULT CHARSET=latin1;
+
+INSERT INTO usuarios VALUES("53","admin","admin","admin@ugr.es","adminadmin.jpg","admin","$2y$10$GliaNoIDJ8nIgFW2lNjrYu.K3naseJWweb3rLe7PRIjUu2oTdBMna");
+INSERT INTO usuarios VALUES("56","El Cocinillas","Cocinas","cocinillas@ugr.es","ElCocinillasCocinas.jpg","usuario","$2y$10$AmSLcJG6Zc9IpYH284hiJerTP.mn9cpbMxFDa.yQUSAQTsR1mr0qG");
+INSERT INTO usuarios VALUES("59","Anónimo","","","","no registrado","");
+
+
+
+DROP TABLE valoraciones;
+
+CREATE TABLE `valoraciones` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `idreceta` int(11) DEFAULT NULL,
+  `idusuario` int(11) DEFAULT NULL,
+  `valoracion` tinyint(4) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `idreceta` (`idreceta`),
+  KEY `idusuario` (`idusuario`),
+  CONSTRAINT `valoraciones_ibfk_1` FOREIGN KEY (`idreceta`) REFERENCES `recetas` (`id`),
+  CONSTRAINT `valoraciones_ibfk_2` FOREIGN KEY (`idusuario`) REFERENCES `usuarios` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+
+
