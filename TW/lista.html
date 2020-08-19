@@ -1,0 +1,171 @@
+{% extends "padre.html" %}
+
+{% block title %} Portada {% endblock %}
+{% block anotherCss %} <link rel="stylesheet" type="text/css" href="styleLista.css"> {% endblock %}
+
+{% block nav %} {{parent()}} {% endblock %}
+
+{% block main %}
+    {% if result != null%}
+        <h2>Formulario de búsqueda:</h2>
+        
+        <p>Selecciona los parámetros que necesites para ajustar la búsqueda a lo que más necesites. <br>
+            <span>(Si no escribes nada en la barra de búsqueda y pulsas "Enviar", se vuelven a mostrar todas las recetas)</span></p>
+
+        <form method="GET" id="FormSearch" action="lista.php">
+
+            <div class="textSearchContainer">
+                <label for="name">Nombre de la receta</label>
+                <input type="text" placeholder="Nombre" id="name" name="name" title="Introduce el nombre de la receta">
+            </div>
+
+            <div class="textSearchContainer">
+                <label for="contentText">Texto en la receta</label>
+                <input type="text" placeholder="Nombre" id="contentText" name="contentText" title="La receta contiene este texto">
+            </div>
+
+            <div class="textSearchContainer">
+                <label for="categoriesText">Buscar en las categorias</label>
+                <input type="text" placeholder="Nombre" id="categoriesText" name="categoriesText" title="Las categorias contienen">
+            </div>
+
+            <div class="radioButtonMenu">
+                <label for="noAlphabetical">Orden alfabético inverso</label>
+                <input type="radio" id="noAlphabetical" name="orderAndCommented" value="noAlphabetical">
+            </div>
+
+            <div class="radioButtonMenu">
+                <label for="moreToLessCommented">De más a menos comentadas</label>
+                <input type="radio" id="moreToLessCommented" name="orderAndCommented" value="moreToLessCommented">
+            </div>
+
+            {% if login == 1 %}
+            <div class="myRecipesBlock">
+                <label for="myRecipes">Listar solo mis recetas</label>
+                <input type="checkbox" id="myRecipes" name="myRecipes">
+                <input type="hidden" id="myID" value="{{userData['id']}}">
+            </div>
+
+            {% endif %}
+
+
+            <input type="submit" value="Enviar">
+            
+        </form>
+
+        <h2>Resultados:</h2>
+
+        <div class="resultsContainer">
+
+        {% if result['names']|length == 0 %}
+            <div class="result">
+                <p>No se obtuvieron resultados.</p>
+            </div>
+        {% else %}
+
+            <div class="prueba">
+
+                {% for i in 0..((result['names']|length)- 1) %}
+                    <div class="result">
+                        
+                        <p title="{{result['names'][i]}}">{{result['names'][i]}}</p>
+                        <a href="receta.php?name={{result['names'][i]}}"><img src="Images/hand.png" title="Accede a la receta"></a>
+
+                        {% if login == 1%}
+                        <!--Creamos dos formularios para enviarle como POST a crearModificarReceta si queremos realizar una modificación o crear una receta nueva. Con CSS les añadiremos 
+                            imagenes a los botones submit -->
+
+                                <!--Si somos admins o somo usuarios pero la receta es nuestra, permitimos su edición o eliminación-->
+                                {% if userData['tipo'] == "admin" or (userData['tipo'] == "usuario" and result['creatorID'][i] == userData['id']) %}
+                                    <form action="crearModificarReceta.php" method="POST" title="Modificar receta">      
+                                        <input type="hidden" name="modify" value="1">
+                                        <input type="hidden" name="recipeName" value="{{result['names'][i]}}">
+                                        <input src="Images/pencil.png" type="image" value="">
+                                    </form>
+
+                                    <form action="crearModificarReceta.php" method="POST" title="Eliminar receta">
+                                        <input type="hidden" name="delete" value="1">
+                                        <input type="hidden" name="recipeName" value="{{result['names'][i]}}">
+                                        <input  src="Images/cancel.png" type="image" value="">
+                                    </form>
+                                {% endif %}
+                        
+                        {% endif %}
+
+                    </div>
+                {% endfor %}
+            </div>
+
+        {% endif %}
+        </div>
+
+    {% else %} <!--Listamos usuarios-->
+
+        <h2> Gestión de usuarios</h2>
+
+        <div class="userListOptions">
+            <p>Indica qué quieres hacer</p>
+            <a href="modificarUsuario.php?createUser=1">Crear usuario</a>
+            <a href="lista.php?users">Listar usuarios registrados</a>
+            <a href="lista.php?validateUsers">Listar usuarios pendientes de validar</a>
+        </div>
+        <div class="usersContainer">
+            {% for user in userList %}
+                <div class="singleUserContainer">
+                    <img src="usersProfiles/{{user['foto']}}">
+                    <div class="textContainer">
+                        <p><span>Nombre:</span> {{user['nombre']}}</p>
+                        <p><span>Apellidos:</span> {{user['apellidos']}}</p>
+                        <p><span>Correo:</span> {{user['email']}}</p>
+                        <p><span>Rol:</span> {{user['tipo']}}</p>
+                    </div>
+
+                    {% if userData['nombre'] != user['nombre']%} <!--No desplegaremos los botones sobre el usuario del propio admin-->
+                        <form action="modificarUsuario.php" method="POST" title="Editar privilegios">      
+                            <input type="hidden" name="editUser" value="1">
+                            <input type="hidden" name="modifyUserName" value="{{user['nombre']}}">
+                            <input src="Images/pencil.png" type="image" value="">
+                        </form>
+
+                        <form action="modificarUsuario.php" method="POST" title="Eliminar usuario">
+                            <input type="hidden" name="delete" value="1">
+                            <input type="hidden" name="deleteUserName" value="{{user['nombre']}}">
+                            <input type="hidden" name="deleteUserSurname" value="{{user['apellidos']}}">
+                            <input  src="Images/cancel.png" type="image" value="">
+                        </form>
+                    {% endif %}
+                </div>
+            {% endfor %}
+
+        </div>
+
+    {% endif %}
+
+
+    {% if sent == 1 %}
+        <script language="javascript">alert("Receta creada correctamente")</script>
+    {% endif %}
+
+    {% if sent == 2 %}
+        <script language="javascript">alert("Receta modificada correctamente")</script>
+    {% endif %}
+
+    {% if sent == 3 %}
+        <script language="javascript">alert("Receta eliminada correctamente")</script>
+    {% endif %}
+
+    {% if userDeleted == 1%}
+    <script language="javascript">alert("Usuario eliminado correctamente")</script>
+    {% endif %}
+
+    {% if userUpdated == 1%}
+    <script language="javascript">alert("Usuario modificado correctamente")</script>
+    {% endif %}
+
+    {% if userCreated == 1%}
+    <script language="javascript">alert("Usuario creado correctamente")</script>
+    {% endif %}
+
+{% endblock %}
+
+{% block aside %} {{parent()}} {% endblock %}

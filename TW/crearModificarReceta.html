@@ -1,0 +1,265 @@
+{% extends "padre.html" %}
+
+{% block title %} Portada {% endblock %}
+{% block anotherCss %} <link rel="stylesheet" type="text/css" href="styleCrearModificarReceta.css"> {% endblock %}
+
+{% block nav %} {{parent()}} {% endblock %}
+
+{% block main %}
+
+
+    {% if result['checked'] == false and result['reason'] != 2 %}
+        <form method="post" action="crearModificarReceta.php" id="createRecipe" enctype="multipart/form-data">
+            <!--TÍTULO -->
+            <div class="createModifyBlock">
+
+                <label for="title"><span class="error">*</span>Nombre de la receta:</label>
+                <input type="text" placeholder="Título de la receta" id="title" value = "{{result['form']['title']}}" name="title" title="Introduce el nombre de la receta">
+                <p><span class="error" id="titleError">{{result['form']['titleError']}}</span></p>
+            </div>
+
+            <!--AUTOR: No permitimos modificarlo, ya que añadimos automáticamente el nombre del usuario como autor-->
+            
+            <div class="createModifyBlock">
+
+                <label for="author">Autor:</label>
+                <input type="text" placeholder="Autor" id="author" value = "{{result['form']['authorName']}} {{result['form']['authorSurname']}}" name="author" title="Autor de la receta" disabled>
+            </div>
+
+            <!--DESCRIPCIÓN-->
+            <div class="createModifyBlock">
+
+                <label for="describe"><span class="error">*</span>Breve descripción:</label>
+                <textarea id="describe" rows="6" cols="50" placeholder="Describe brevemente la receta..." name="describe">{{result['form']['describe']}}</textarea>
+                <p><span class="error" id="describeError">{{result['form']['describeError']}}</span></p>
+            </div>
+
+            <!--PASOS DE LA RECETA-->
+            <div class="createModifyBlock">
+
+                <label for="steps"><span class="error">*</span>Pasos a seguir:</label>
+                <textarea id="steps" rows="6" cols="50" placeholder="Indica los pasos a seguir..."  name="steps">{{result['form']['steps']}}</textarea>
+                <p><span class="error" id="stepsError">{{result['form']['stepsError']}}</span></p>
+                
+            </div>
+
+            <!--CATEGORIAS-->
+            <div class="createModifyBlock">
+
+                <label for="categories"><span class="error">*</span>Categorias de la receta (separadas por comas):</label>
+                <input type="text" placeholder="Categorías" id="categories" value = "{{result['form']['categories']}}" name="categories" title="Categorías de la receta">
+                <p><span class="error" id="categoriesError">{{result['form']['categoriesError']}}</span></p>
+            </div>
+
+            <!--INGREDIENTES-->
+            <div class="createModifyBlock">
+
+                <label for="ingredients"><span class="error">*</span>Ingredientes de la receta (separados por comas):</label>
+                <input type="text" placeholder="Ingredientes" id="ingredients" value = "{{result['form']['ingredients']}}" name="ingredients" title="Categorías de la receta">
+                <p><span class="error" id="ingredientsError">{{result['form']['ingredientsError']}}</span></p>
+            </div>
+
+            <div class="createModifyBlock">
+
+                <label for="images[]">Imágenes de la receta:</label>
+                <input type="file" id="uploadPhotos" name="images[]" multiple onchange="prueba()">
+                <p><span class="error" id="uploadPhotosError">{{result['form']['imageError']}}</span></p>
+            </div>
+            
+
+            {%set splittedImage = result['form']['fotos']|split(",")%}  <!--Mostramos todas las imágenes guardadas en la BD-->
+
+            {% if splittedImage|length > 0 and splittedImage[0] != "no-image.jpg" and result['form']['fotos'] is not empty%}
+                                                         
+                    <span id="imagesOfRecipe">Imagenes de la receta:</span>
+                        <div class="containerImages">   <!--Aquí tendremos todas las imágenes y formularios-->
+                            {% for i in 0..(splittedImage|length-1) %}
+                                <div class="showImages">
+
+                                    <img src="Images/{{splittedImage[i]|trim}}">  <!--Trim necesario para borrar el primer espacio del nombre-->
+                                                
+                                    <div class="buttonBlock">
+                                        <input type="submit" name="deleteImage_{{i}}" value="Eliminar"> 
+                                    </div>
+                                        
+                                </div>
+                            {% endfor %}
+                        </div>
+            {% endif %}
+
+
+                <span id="imagesToIntroduce">Imágenes a introducir:</span>
+                <div id="photosContainer">
+                    <div id="resultAJAX">
+                        
+                    </div>
+                
+                {% if result['form']['haveImages'] == 1%} <!--Tenemos imagenes en el fichero temporal, vamos a mostrarlas-->
+                    {% for i in 0..((result['form']['tmpImages']|length)-1) %}
+                    <div class="photoInputBlock">
+                        <img src="{{result['form']['tmpImages'][i]}}">
+                        <input type="submit" name="deleteTmpImage_{{i}}" value="Eliminar">  
+                    </div>
+                    {% endfor %}
+                {% endif %}
+                
+                </div>
+                
+
+            <div class="submitBlock">
+
+                <input type="submit" name="Enviar" value="Enviar">
+                
+            </div>
+
+            
+            <input type="hidden" name="OK" value="0">
+            <input type="hidden" name="reason" value="{{result['reason']}}">
+            <input type="hidden" name="recipeID" value="{{result['recipeID']}}">
+            <input type="hidden" name="photosRecipe" value="{{result['form']['fotos']}}">
+                       
+
+        </form>
+
+    {% elseif result['checked'] == true or result['reason'] == 2 %}
+        {% if result['deleteComment'] != 1%}
+            <form method="post" action="crearModificarReceta.php" id="createRecipe">
+                <!--TÍTULO -->
+                <div class="createModifyBlock">
+
+                    <label for="title">Nombre de la receta:</label>
+                    <input type="text" placeholder="Título de la receta" id="title" value = "{{result['form']['title']}}" name="title" title="Introduce el nombre de la receta" disabled>
+
+                </div>
+
+                <!--AUTOR-->
+                <div class="createModifyBlock">
+
+                    <label for="author">Autor:</label>
+                    <input type="text" placeholder="Autor" id="author" value = "{{result['form']['authorName']}} {{result['form']['authorSurname']}}" name="author" title="Autor de la receta" disabled>
+                    
+                </div>
+
+                <!--DESCRIPCIÓN-->
+                <div class="createModifyBlock">
+
+                    <label for="describe">Breve descripción:</label>
+                    <textarea id="describe" rows="6" cols="50" placeholder="Describe brevemente la receta..." name="describe" disabled>{{result['form']['describe']}} </textarea>
+                    
+                </div>
+
+                <!--PASOS DE LA RECETA-->
+                <div class="createModifyBlock">
+
+                    <label for="steps">Pasos a seguir:</label>
+                    <textarea id="steps" rows="6" cols="50" placeholder="Indica los pasos a seguir..." name="steps" disabled>{{result['form']['steps']}}</textarea>
+                    
+                    
+                </div>
+
+                <!--CATEGORIAS-->
+                <div class="createModifyBlock">
+
+                    <label for="categories">Categorias de la receta:</label>
+                    <input type="text" placeholder="Categorías" id="categories" value = "{{result['form']['categories']}}" name="categories" title="Categorías de la receta" disabled>
+                    
+                </div>
+
+                <!--INGREDIENTES-->
+                <div class="createModifyBlock">
+
+                    <label for="ingredients">Ingredientes de la receta:</label>
+                    <input type="text" placeholder="Ingredientes" id="ingredients" value = "{{result['form']['ingredients']}}" name="ingredients" title="Categorías de la receta" disabled>
+                    
+                </div>
+
+                {%set splittedImage = result['form']['fotos']|split(",")%}
+
+                {% if splittedImage|length > 0 and splittedImage[0] != "no-image.jpg" and result['form']['fotos'] is not empty%}
+
+                                                            
+                        <span id="imagesOfRecipe">Imagenes de la receta:</span>
+                            <div class="containerImages">   <!--Aquí tendremos todas las imágenes y formularios-->
+                                {% for i in 0..(splittedImage|length-1) %}
+                                
+                                    <div class="showImages">
+
+                                        <img src="Images/{{splittedImage[i]|trim}}">  <!--Trim necesario para borrar el primer espacio del nombre-->
+                                                    
+                                        <div class="buttonBlock">
+                                            <input type="submit" name="deleteImage_{{i}}" value="Eliminar" disabled>   <!--Si queremos eliminar una imagen, obtenemos su receta y su nombre-->
+                                            <input type="hidden" name="eventName" value="{{result['form']['title']}}">
+                                            <input type="hidden" name="photo_{{i}}" value="{{splittedImage[i]}}" >
+
+
+                                        </div>
+                                            
+                                    </div>
+                                {% endfor %}
+                            </div>
+                {% endif %}
+
+                {% if result['form']['haveImages'] == 1%} <!--Tenemos imagenes en el fichero temporal, vamos a mostrarlas-->
+                    <span id="imagesToIntroduce">Imágenes a introducir:</span>
+                    <div id="photosContainer"> 
+                        {% for i in 0..((result['form']['tmpImages']|length)-1) %}
+                        <div class="photoInputBlock">
+                            <img src="{{result['form']['tmpImages'][i]}}">
+                            <input type="submit" name="deleteTmpImage_{{i}}" value="Eliminar" disabled>  
+                        </div>
+                        {% endfor %}
+                    </div>
+                    
+                {% endif %}
+
+                <div class="submitBlock">
+
+                    {% if result['reason'] != 2%}
+                        <input type="submit" value="Enviar">
+                    {% else %}
+                        <input type="submit" value="Eliminar">
+                    {% endif %}
+                </div>
+
+                <input type="hidden" name="OK" value="1">
+                <input type="hidden" name="reason" value="{{result['reason']}}">
+
+                <!--Como al estar los parametros a "disabled" no podemos hacer "submit" de ellos, pasamos los datos como cmapos "hidden" para poder seguir 
+                    teniendolos, ya que vamos a incluirlos en la base de datos-->
+                <input type="hidden" name="titleOK" value="{{result['form']['title']}}">    
+                <input type="hidden" name="authorOK" value="{{result['form']['authorName']}}">
+                <input type="hidden" name="authorSurnameOK" value="{{result['form']['authorSurname']}}">
+                <input type="hidden" name="describeOK" value="{{result['form']['describe']}}">
+                <input type="hidden" name="stepsOK" value="{{result['form']['steps']}}">
+                <input type="hidden" name="categoriesOK" value="{{result['form']['categories']}}">
+                <input type="hidden" name="ingredientsOK" value="{{result['form']['ingredients']}}">
+                <input type="hidden" name="recipeID" value="{{result['recipeID']}}">            
+
+                
+
+            </form>
+
+        {% else %}  <!--Formulario de eliminación de comentario-->
+            <form method="post" action="crearModificarReceta.php" id="createRecipe">
+                <!--INGREDIENTES-->
+                <div class="createModifyBlock">
+                    <label for="commentToDelete">Comentario a eliminar:</label>
+                    <textarea id="commentToDelete" rows="6" cols="50" name="commentToDelete" disabled>{{result['commentText']}}</textarea>
+                </div>
+
+                <div class="submitBlock">
+                    <input type="submit" id="deleteCommentOK" name="deleteCommentOK" value="Eliminar comentario">
+                    <input type="hidden" name="commentAuthorName" value="{{result['commentAuthorName']}}">
+                    <input type="hidden" name="commentAuthorSurname" value="{{result['commentAuthorSurname']}}">
+                    <input type="hidden" name="commentText" value="{{result['commentText']}}">
+                    <input type="hidden" name="commentDate" value="{{result['commentDate']}}">
+                    <input type="hidden" name="commentRecipe" value="{{result['commentRecipe']}}">
+                    <input type="hidden" name="commentRecipeID" value="{{result['commentRecipeID']}}">
+                </div>
+            </form>
+        {% endif %}
+    {% endif %}
+
+{% endblock %}
+
+{% block aside %} {{parent()}} {% endblock %}

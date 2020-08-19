@@ -1,0 +1,65 @@
+{% extends "padre.html" %}
+
+{% block title %} Portada {% endblock %}
+{% block anotherCss %}<link rel="stylesheet" type="text/css" href="stylePortada.css">{% endblock %}
+
+{% block nav %} {{parent()}} {% endblock %}
+
+{% block main %}
+    <h1>BIENVENIDO!</h1>
+    
+    <p>Si has llegado hasta esta página puede ser por dos razones:</p>
+    
+    <ol>
+        <li>La primera <span>(y más probable)</span>, es que la cuarentena te ha "afectado" tanto que has decidido tomarte 
+            por fin en serio el deporte y la alimentación (cosas a las que animamos desde aquí).</li>
+
+        <li>La segunda, que simplemente te gusta cuidar tu alimentación, <span>y no quieres pasarte todo el día así:</span></li>
+    </ol>
+    
+    <img src="Images/homer.gif" title="En 2016, más de 1900 millones de adultos de 18 o más años tenían sobrepeso, de los 
+    cuales, más de 650 millones eran obesos. "/>
+
+    <p>De cualquier modo, te damos la bienvenida a nuestra página, donde encontrarás maravillosas recetas con las
+        que podrás comer "bien y rico" en estos tiempos que corren. En nuestra página podrás encontrar platos tan
+        apetitosos como estos:
+    </p>
+
+    <div class="photos">
+        <img src="Images/image0.jpg" title="Rissoto de calabaza y champiñones"/>
+        <img src="Images/tomatosoup0.jpg" title="Sopa de tomate"/>
+        <img src="Images/chicken0.jpg" title="Pollo al horno"/>
+        <img src="Images/russiansalad0.jpeg" title="Ensaladilla Rusa"/>
+        <img src="Images/cod7.jpg" title="Revuelto de bacalao"/>
+    </div>
+
+    <p>Así que no te lo pienses más, y adéntrate en el mundo de "Comida sana para todos los días", y verás como
+        en poco tiempo te sentirás mejor y te verás tal que así:
+    </p>
+
+    <img src="Images/popeye.gif" title="Una alimentación sana puede tener grandes beneficios tales como mejorar el sistema 
+    inmunológico, o darnos la energía necesaria para afrontar el día."/>
+
+    {% if error == 1%}
+        <script language="javascript">alert("Acceso incorrecto")</script>
+    {% endif %}
+
+    {% if notFound == 1%}
+        <script language="javascript">alert("La receta no existe")</script>
+    {% endif %}
+
+    {% if dbDeleted == 1%}
+        <script language="javascript">alert("Base de datos borrada correctamente. Ahora eres el único usuario y administrador")</script>
+    {% endif %}
+
+    {% if fileUploaded == 1%}
+        <script language="javascript">alert("Fichero subido correctamente. Se acaba de restaurar la base de datos.")</script>
+    {% endif %}
+
+    {% if myOwnUserCreated == 1%}
+        <script language="javascript">alert("Usuario creado. Tan pronto como un administrador valide la cuenta podrás empezar a navegar por la web como usuario registrado ;)")</script>
+    {% endif %}
+
+{% endblock %}
+
+{% block aside %} {{parent()}} {% endblock %}

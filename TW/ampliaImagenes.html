@@ -1,0 +1,18 @@
+{% extends "padre.html" %}
+
+{% block title %} Portada {% endblock %}
+{% block anotherCss %} <link rel="stylesheet" type="text/css" href="styleAmpliaImagenes.css"> {% endblock %}
+
+{% block nav %} {{parent()}} {% endblock %}
+
+{% block main %}
+    <form action="receta.php" method="POST">
+        <img src="Images/{{photo}}" title="Imagen de la receta {{recipeName}}">
+        <p></p>
+        <input type="submit" name="backToRecipe" value="Volver a la receta">
+        <input type="hidden" name="name" value="{{recipeName}}">
+    </form>
+    
+{% endblock %}
+
+{% block aside %} {{parent()}} {% endblock %}

@@ -1,0 +1,320 @@
+/*Primero haremos un HTML Reset, para no tener problema en el resto de navegadores*/
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, 
+a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, 
+strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form,
+label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, 
+embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, 
+time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
+
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section, main {
+    display: block;
+}
+
+/*--------------------------- FLEX PRINCIPALES USADOS --------------------------*/
+
+.upper, footer, main, .center, .rows{    /*flex reutilizado en varias partes de la página*/
+    background-color: rgb(171, 224, 71);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.center{   /* Parte central de la web, que contiene tanto al main como al aside*/
+    background-color: white;
+    justify-content: flex-start;
+}
+
+.login{ /*Contiene todo el contenedor del login*/
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+}
+
+.rows{ /*Contiene todas las filas del login menos el botón (para hacer mas fácil que se muevan los label e inputs)*/
+    width: 98%;
+    background-color: rgb(240, 240, 123);
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
+
+/*--------------------------- HEADER--------------------------*/
+.hamburger{ /*Logo hecho así para después en la redimensión conseguir el efecto de solo una imagen cambiando solo el valor de flex-basis*/
+    background-image: url("Images/logo.png");
+    background-size: 100px;
+    width: 100px;
+    height: 100px;
+    background-repeat: repeat-x;
+    flex-basis: 300px;
+    margin-left: 5%;
+}
+
+header h1{  /*formato del título de la página*/
+    font-size:350%;
+    margin-right: 10%;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+nav{
+    margin: 1% 0% 1% 0%;
+    padding: 1% 0% 1% 0%;
+    background-color: rgb(203, 236, 142);
+}
+
+nav > a {
+    color: black;
+    font-weight: bold;
+    text-decoration: none;
+    margin-left: 3%;
+}
+
+/*--------------------MAIN-----------------------------------*/
+main{
+    flex-direction: column;
+    width: 80%;
+    padding-top: 0.5%;
+    background-color: rgb(211, 230, 175);
+    margin-bottom: 1%;
+}
+
+.stars{     /*imagen de las estrellas*/
+    height: 30px;
+    margin: 1% 1% 2%;
+}
+
+main h1{    
+    font-size: 190%;
+    padding-left: 1%;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    width: 70%;
+}
+
+
+.container{ /*Contiene el nombre de la receta, la foto de la puntuación, los tags de la receta y al autor*/
+    display: flex;
+    flex-direction: column;
+}
+
+/*--------------------------------------------- FOOTER --------------------------------------*/
+footer{
+  justify-content: flex-start;  
+  width: 100%;
+} 
+
+footer > p{
+    margin: 1% 0% 1% 0.5%;
+}
+
+footer > p:not(:first-child){   /*Dar el efecto de líneas laterales*/
+    border-left: solid 1px black;
+    padding-left: 0.5%;
+}
+
+/*-------------------------------------ASIDE ----------------------------------------*/
+aside{
+    float: right;
+    width: 19%;
+    margin-left: 1%;
+    margin-top: 0;
+}
+
+aside  > *{ /* Padding a todo elemento*/
+    padding: 2%;
+}
+
+
+aside > div{ /*Formato de todo dentro de los contenedores excepto los titulos*/
+    background-color: rgb(240, 240, 123);
+    margin-bottom: 5%;
+    
+}
+
+aside h1{   /*Formato de los títulos*/
+    background-color: rgb(247, 176, 45);
+    padding: 1% 0% 1% 5%;
+    font-size: 150%;
+    
+}
+aside > div > :not(h1){
+    padding-left: 2%;
+}
+
+    /*-------------------------------LOGIN----------------------*/
+    .login input{
+        width: 40%;
+        margin: 1% 30% 2% 2%;
+    }
+
+    button{
+        width: 60px;
+        margin: auto;
+    }
+
+    aside label{
+        text-align: right;
+        width: 22%;
+    }
+
+    /*-------------------------TOP 3 --------------------------*/
+    .top3 > li{
+        margin: 1% 0% ;
+        list-style-type: none;
+    }
+
+    .top3 > li > a{
+        color: black;
+        text-decoration: none;
+        
+    }
+
+    /*-------------------------NUMERO DE RECETAS--------------------*/
+    .number > p{
+        margin-top: 1%;
+    }
+
+/*------------------------------------------------MEDIAS (Para hacer la web adaptable) --------------------------------------------*/
+@media(max-width:1440px){
+
+    header h1{  /*formato del título de la página*/
+        font-size:300%;
+        margin-right: 5%;
+    }
+
+    .hamburger{
+        flex-basis: 200px;  /*Hacemos que "desaparezca" una hamburguesa del logo*/
+        margin-left: 3%;
+    }
+
+    main h1{    
+        font-size: 175%;
+    }
+}
+
+@media(max-width:1100px){
+    header h1{  /*formato del título de la página*/
+        font-size:250%;
+        margin-right: 2%;
+    }
+
+    .hamburger{
+        flex-basis: 100px;  /*"Desaparece" otra hamburguesa del logo, quedando solo una*/
+        margin-left: 1.5%;
+    }
+
+    .top3 > li{             /*Vamos aumentando el espacio entre los elementos de la lista para que no se solapen mucho 
+                            y se pueda seguir distinguiendo uno de otros*/
+        margin: 3% 0% ;
+    }
+
+    main h1{    
+        font-size: 145%;
+    }
+
+}
+
+@media(max-width:800px){
+    
+
+    footer{
+        flex-direction: column;
+    }
+
+    footer > p:not(:first-child){
+        border-left: none;
+    }
+
+    aside{  /*Ponemos el aside por encima del main*/
+        width: 98%;
+        order: -1;
+    }
+
+    main{
+        width: 98%;
+        margin: auto;
+    }
+
+
+    .center{    /*Disponemos los elementos en columnas*/
+        flex-direction: column;
+    }
+
+
+    .ranking, .number, aside h1,.stars{    /*Eliminamos de la vista del usuario los elementos que no deben verse*/
+        display: none;
+    }
+
+    aside > div{
+        background-color: rgb(240, 240, 123);
+        margin-bottom: 2%;
+    }
+
+    aside > div > :not(h1){
+        padding-left: 0;
+    }
+
+    aside  label{
+        text-align: right;
+        width: 30%;
+        padding-top: 2.5%;
+
+    }
+
+    .login{
+        flex-direction: row;
+        align-items: flex-start;
+        flex-wrap: wrap;
+    }
+
+    .rows{
+        width: 30%;
+        margin-left: 5%;
+    }
+
+
+    .login input{
+        width: 55%;
+        margin: 0% 2%;
+        padding: 2% 0%;
+    }
+
+    main h1{   
+        font-size: 175%;
+        margin-right: 0; 
+        width: 100%;
+    }
+
+
+}
+
+@media(max-width: 720px){
+
+    header > .upper{
+        flex-wrap: wrap;
+        justify-content: space-evenly;
+    }
+
+    header h1{  /*formato del título de la página*/
+        margin: auto;
+    }
+
+    .login{
+        flex-direction: column;
+    }
+
+    .rows{
+        width: 80%;
+    }
+
+    .login input{
+        margin: auto;
+    }
+}

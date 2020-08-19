@@ -1,0 +1,27 @@
+{% extends "padre.html" %}
+
+{% block title %} Portada {% endblock %}
+{% block anotherCss %}<link rel="stylesheet" type="text/css" href="styleBorrarYRestaurarBD.css">{% endblock %}
+
+{% block nav %} {{parent()}} {% endblock %}
+
+{% block main %}
+    {% if action == "deleteDB"%}
+        <form action="borrarYRestaurarBD.php" method="POST" id="formDeleteDB">
+            <p>Seguro que quieres eliminar todos los datos de la base de datos?</p>
+            <input type="submit" name="deleteBDOK" value="Sí, eliminar datos">
+            <input type="hidden" name="adminID" value="{{userData['id']}}">
+        </form>
+    {% elseif action == "restoreDB" %}
+        <form action="borrarYRestaurarBD.php" method="POST" id="formRestoreDB" enctype="multipart/form-data">
+            <label for="uploadDB">Selecciona un fichero:</label>
+            <input type="file" name="uploadDB" id="uploadDB" />
+            <p>{{fileError}}</p>
+            <input type="submit" name="uploadFileToServer" value="Subir">
+            <input type="hidden" name="restoreDB" value="1">
+        </form>
+    {% endif %}
+
+{% endblock %}
+
+{% block aside %} {{parent()}} {% endblock %}

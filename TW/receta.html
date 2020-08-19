@@ -1,0 +1,156 @@
+{% extends "padre.html" %}
+
+{% block title %} Portada {% endblock %}
+{% block anotherCss %} <link rel="stylesheet" type="text/css" href="styleReceta.css"> {% endblock %}
+
+{% block nav %} {{parent()}} {% endblock %}
+
+{% block main %}
+
+        <div class="container">
+            
+            <div class="upper">
+                
+                <h1 title="{{recipe['nombre']}}">{{recipe['nombre']}}</h1>
+                <div class="rating">
+                    {% if rated == 0 and login == 1%}  <!--Aún no hemos valorado la receta-->
+                        <p>Puntúa la receta:</p>
+
+                        <form action="receta.php" method="POST" id="ratingRecipe">
+                            <label for="onePoint">1</label>
+                            <input type="radio" id="onePoint" name="rateOfRecipe" value="1">
+                            
+                            <label for="twoPoints">2</label>
+                            <input type="radio" id="twoPoints" name="rateOfRecipe" value="2">
+
+                            <label for="threePoints">3</label>
+                            <input type="radio" id="threePoints" name="rateOfRecipe" value="3">
+
+                            <label for="fourPoints">4</label>
+                            <input type="radio" id="fourPoints" name="rateOfRecipe" value="4">
+
+                            <label for="fivePoints">5</label>
+                            <input type="radio" id="fivePoints" name="rateOfRecipe" value="5">
+
+                            <input type="submit" id ="sendRating" name="sendRating" value="Enviar">
+                            <input type="hidden" name="recipeID" value="{{recipe['id']}}">
+                            <input type="hidden" name="userID" value="{{userData['id']}}">
+                            <input type="hidden" name="name" value="{{recipe['nombre']}}">
+
+                        </form>
+                    {% endif %}
+                    <span id="totalRating">Valoración media: {{recipe['resultRates']}}/5</span>
+                    <span>({{recipe['totalRates']}} votos)</span>
+                </div>
+                        
+            </div>
+
+            <div class="upperBelow">
+                <p>{{recipe['etiquetas']}}</p>
+                <p class="author" title="Autor">Autor:{{recipe['nombreautor']}} {{recipe['apellidosautor']}}</p>
+
+            </div>
+
+        </div> 
+   
+        <div class="description">
+
+            <pre class="content">{{recipe['descripcion']}}</pre>
+
+            {% if recipe['fotos']|length != 0 %}
+                <a href="ampliaImagenes.php?makePhotoBigger={{recipe['fotos'][0]}}&recipeName={{recipe['nombre']}}">
+                        <img src="Images/{{recipe['fotos'][0]}}"title="Presentación final del plato">
+                </a>
+            {% endif %}
+
+        </div>
+
+        <div class="recipe">
+           
+            <ul class="ingredients" title="ingredientes.&#013&#013Consejo: Lava tus manos y los ingredientes antes de manipular los alimentos">
+                {% if (recipe['ingredientes'] > 0) %}
+                    {% for ingredient in recipe['ingredientes']%}
+                        <li>{{ingredient}}</li>
+                    {% endfor %}
+                {% endif %}
+            </ul>
+
+            <pre> {{recipe['preparacion']}}</pre>  
+    
+        </div>
+
+        <div class="images" title="Ingredientes y preparación del plato">
+
+            {% if recipe['fotos']|length > 0  and recipe['fotos'][0] != "no-image.jpg"%}
+                {% for element in recipe['fotos']%}
+                <a href="ampliaImagenes.php?makePhotoBigger={{element}}&recipeName={{recipe['nombre']}}">
+                    <img src="Images/{{element}}">
+                </a>
+                {% endfor %}
+            {% endif %}
+        </div>
+
+        <!--COMENTARIOS Y FUTURA FORMA DE AÑADIRLOS, DE CARA A LA PRÁCTICA FINAL-->
+        <div class="comments">
+
+            {% if recipe['comentarios']['fecha']|length > 0%}
+                {% set element = recipe['comentarios'] %}
+                {% for i in 0..((element['fecha']|length)-1)%}
+                
+                    <div class="commentBlock">
+
+                        <span class="info" title="{{element['autor'][i]}} comentó:">{{element['fecha'][i]}}  {{element['nombreAutor'][i]}} {{element['apellidosAutor'][i]}}</span>
+                        
+                        <div class="rowBelow">
+                            <p>{{element['texto'][i]}}</p>
+
+                            {% if userData['tipo'] == "admin"%}
+                                <form action="crearModificarReceta.php" method="POST" title="Eliminar comentario">
+                                    <input type="hidden" name="commentTextToDelete" value="{{element['texto'][i]}}">
+                                    <input type="hidden" name="commentAuthorNameToDelete" value="{{element['nombreAutor'][i]}}">
+                                    <input type="hidden" name="commentAuthorSurnameToDelete" value="{{element['apellidosAutor'][i]}}">
+                                    <input type="hidden" name="commentDateToDelete" value="{{element['fecha'][i]}}">
+                                    <input type="hidden" name="commentRecipeToDelete" value="{{recipe['nombre']}}">
+                                    <input type="hidden" name="commentRecipeIDToDelete" value="{{recipe['id']}}">
+                                    <input type="submit" name="deleteComment" value="Eliminar comentario">
+                                </form>
+                            {% endif %}
+                        </div>
+                        
+
+                    </div>
+
+                    
+                {% endfor %}
+            {% endif %}
+        </div>
+
+        <div id="commentMenu">
+            <a href="javascript:void(0)" class="closebtn" onclick="closeCommentMenu()">&times;</a>
+
+            <form action="receta.php" method="POST">
+                 
+
+                <div class="component">
+                    <label for="commentTextArea" id="commentTextAreaLabel">Comentario:</label>
+                    <textarea id="commentTextArea" name="commentTextArea" rows="4" cols="50" placeholder="Escribe tu comentario..."></textarea>
+                </div>
+
+                <input type="submit" id="closeMenu" name="closeMenu" title="Enviar comentario" value="Enviar">
+                <input type="hidden" name="recipeName" value="{{recipe['nombre']}}">
+            </form>
+            
+        </div>
+    
+        
+        <div class="pages">
+            <a href="javascript:void(0)" id="openMenu" onclick="openCommentMenu()"><img src="Images/comment.png" alt="opcion" title="Escribir un comentario"></a>
+        </div>
+
+        {% if deletedComment == 1%}
+            <script language="javascript">alert("Comentario borrado correctamente")</script>
+        {% endif %}
+
+{% endblock %}
+
+{% block aside %} {{parent()}} {% endblock %}

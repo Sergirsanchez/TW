@@ -1,0 +1,188 @@
+
+/*--------------------------- FLEX PRINCIPALES USADOS --------------------------*/
+
+.description,.pages, .images{    /*flex reutilizado en varias partes de la página*/
+    background-color: rgb(171, 224, 71);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+}
+
+
+.images{ /*Imágenes de debajo de la receta, mostrando los pasos*/
+    width: 80%;
+    background-color: rgb(211, 230, 175);
+    margin: auto;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+
+}
+
+    /*------------------------------------CONTAINER---------------------------------------*/
+    main .upper{
+        margin: 1%;
+        width: 98%;
+    }
+
+    main .below{
+        margin-top: -1%;    /*Puesto así ya que por defecto el margin bottom de este elemento y el de arriba es de 1% (al agruparlos)
+                            por lo que al añadirle el -1% es como si estuviera a 0%*/
+        font-size: small;
+        background-color: rgb(211, 230, 175);
+        
+    }
+
+    .tags{
+        padding-left: 1%;
+        word-wrap: normal;
+    }
+
+
+.description{   /*Descripción y foto de la receta*/
+    background-color: rgb(179, 228, 90);
+    width: 90%;
+    margin: auto;
+    margin-bottom: 2%;
+    flex-wrap: wrap;
+    padding: 1%;
+}
+    /*----------------------------------------DESCRIPTION---------------------------------*/
+    .description img{
+        width: 35%;
+    }
+
+    .description > .content{
+        white-space: pre-wrap;  /* Para el pre se adapte al ancho que tiene, y no se salga de este*/
+        line-height: 150%;
+        width: 62%;
+    }
+
+
+.ingredients{  /*Recuadro con los ingredientes*/
+    background-color: rgb(151, 185, 248);
+    float: right;
+    padding: 1%;
+    margin-right: 6%;
+    margin-left: 2%;
+}
+
+    li{ /*Eliminar el cículo al lado de cada uno de los ingrdientes*/
+        list-style-type: none;
+    }
+
+.recipe > pre{    /*Párrafos de la receta*/
+    white-space: pre-wrap;
+    margin: 0% 1%;
+} 
+
+.images > img{  /*Formato de las imágenes de debajo de la receta*/
+    width: 18%;
+    margin: 1%;
+
+}
+
+.comments{  /*Comentarios*/
+    margin: 1%;
+}
+    /*-------------------COMMENTS-----------------------*/
+    .comments > p{
+        background-color: rgb(252, 135, 115);
+        margin-bottom: 1%;
+        padding: 1% 0% 1% 1%;
+    }
+    span{ /*Encabezado de los comentarios*/
+        display: block;
+        color: purple;
+    }
+
+
+.pages{ /*Barra inferior, que contiene las páginas y distintas opicones*/
+    width: 98%;
+    justify-content: flex-end;  /*Al estar en la parte derecha, luego nos será más facil separar los elementos con un margin-right de los bordes del contenedor, así como menos problemas
+                                a la hora de redimensionar la página*/
+    flex-wrap: wrap;
+    margin: 1%;
+}
+    /*----------------------------PAGES----------------------------------*/
+    .pages > a{ /*Al ser flex-end, con margin-right alejamos a los elementos entre sí y con el borde de la página*/
+        margin-right: 2%;
+    }
+    
+    .pages  > a [alt="opcion"]{ /*Para poner los iconos que no son números de página a un ancho mayor que los números*/
+        width: 30px;
+    }
+    
+    .pages  > a > img:not([alt="opcion"]){  /*Formato de los números de página*/
+        width: 10px;
+        height: 100%;
+        margin-right: 1%;
+    }
+
+/*------------------------------------------------MEDIAS (Para hacer la web adaptable) --------------------------------------------*/
+
+@media(max-width:800px){
+    .description{
+        width: 98%;
+    }
+
+    .description img{       /*Redimensionamos la imagen al centro con ese height, para que cuando empiece a crecer el alto por el texto no se descompense*/
+        align-self: center;
+        max-height: 35%;
+    }
+
+    .recipe > p{
+        margin-top: 1%;
+        padding-bottom: 2%;
+    } 
+
+    .ingredients{   /*Disponemos los ingredientes en dos columnas*/
+        float:none;
+        columns: 2;
+        width: 96%;
+        margin: auto;
+    }
+
+    .images > img{
+        width: 30%;
+    
+    }
+    .comments{  /*Para poner los comentarios al final del todo*/
+        order: 2;
+    }
+
+    button{
+        padding: 1% 0%;
+    }
+
+    .container{
+        display: flex;
+        flex-direction: row;
+        background-color: rgb(171, 224, 71);
+        margin: 1%;
+
+    }
+
+    .container >.below{
+        flex-direction: column;
+        margin-top: 1%;
+        width: 30%;
+        background-color: rgb(171, 224, 71);
+    }   
+}
+
+@media(max-width: 500px){
+    .description img{
+        width: 98%;
+        margin: auto;
+    }
+
+    .description > .content{
+        width: 98%;
+        margin-bottom: 1%;
+    }
+
+    .author{
+        margin-top: 5%;
+    }
+}

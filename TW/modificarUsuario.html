@@ -1,0 +1,273 @@
+{% extends "padre.html" %}
+
+{% block title %} Portada {% endblock %}
+{% block anotherCss %}<link rel="stylesheet" type="text/css" href="styleModificarUsuario.css">{% endblock %}
+
+{% block nav %} {{parent()}} {% endblock %}
+
+{% block main %}
+
+
+
+    {% if formData['checked'] == 0 %}
+
+        <form action="modificarUsuario.php" method="POST" id="modifyUserForm" enctype="multipart/form-data">
+
+            <div class="formBlock">
+                <h2>Datos del usuario:</h2>
+            </div>
+
+            {% if formData['createUser'] != 1%} <!--El admin no puede añadir foto al usuario; se la introducirá el mismo-->
+                <div class="formBlock">
+                    <label for="userImage">Foto:</label>
+
+                    <!--Si nmodificamos nuestros propios datos, la imagen mostrada será la del directorio tmpUsers, para que veamos como cambia pero sin modificar
+                        el directorio real en el que están las fotos de usuarios hasta que aceptemos todos los cambios-->
+                    {% if formData['myOwnData'] == 1%}  
+                        <img src="tmpUsers/{{formData['foto']}}">
+                    {% else %}
+                        <img src="usersProfiles/{{formData['foto']}}">
+                    {% endif %}
+                    <span class="errorPhoto"> {{formData['userImageError']}}</span>
+                </div>
+
+                <div class="formBlock">
+                    
+                    {% if formData['modifyUser'] == 1%}
+                        <input type="file" class="uploadPhoto"  name="newUserImage" disabled>
+                    {% else %}
+                        <input type="file" class="uploadPhoto" name="newUserImage">
+                    {% endif %}
+                </div>
+            {% endif %}
+
+            <div class="formBlockLeft">
+                <span class="error"> * Campos obligatorios</span>
+            </div>
+
+            <div class="formBlockLeft">
+                <label for="userName"><span class="star">*</span>Nombre:</label>
+                {% if formData['modifyUser'] == 1%}
+                <input type="text" id="userName" name="userName" value="{{formData['userName']}}" disabled>
+                {% else %}
+                <input type="text" id="userName" name="userName" value="{{formData['userName']}}">
+                {% endif %}
+
+                <span class="error" id="userNameError">{{formData['userNameError']}}</span>
+            </div>
+
+            <div class="formBlockLeft">
+                <label for="userSurname"><span class="star">*</span>Apellidos:</label>
+                {% if formData['modifyUser'] == 1%}
+                <input type="text" id="userSurname" name="userSurname" value="{{formData['userSurname']}}" disabled>
+                {% else %}
+                <input type="text" id="userSurname" name="userSurname" value="{{formData['userSurname']}}">
+                {% endif %}
+
+                <span class="error" id="userSurnameError">{{formData['userSurnameError']}}</span>
+            </div>
+
+            <div class="formBlockLeft">
+                <label for="userEmail"><span class="star">*</span>Email:</label>
+                {% if formData['modifyUser'] == 1%}
+                <input type="text" id="userEmail" name="userEmail" value="{{formData['userEmail']}}" disabled>
+                {% else %}
+                <input type="text" id="userEmail" name="userEmail" value="{{formData['userEmail']}}">
+                {% endif %}
+
+                <span class="error" id="userEmailError">{{formData['userEmailError']}}</span>
+            </div>
+
+            <div class="formBlockLeft">
+
+                {% if formData['createUser'] == 1 %}
+                <label for="newPassword1"><span class="star">*</span>Nueva contraseña:</label>
+                {% elseif formData['modifyUser'] != 1%}
+                <label for="newPassword1">Nueva contraseña:</label>
+                {% endif %}
+
+                {% if formData['createUser'] == 1 or formData['modifyUser'] != 1%}
+                <input type="password" id="newPassword1" name="newPassword1" >
+                <input type="password" id="newPassword2" name="newPassword2" >
+                {% endif %}
+
+
+                    <span class="error" id="userPasswordError">{{formData['userPasswordError']}}</span>
+
+
+            </div>
+
+            {% if formData['createMyOwnUser'] != 1 and formData['myOwnData'] != 1%}
+                <div class="formBlockLeft">
+            
+                    <label for="userRol">Rol del usuario:</label>
+
+                    <select name="userRol">
+
+                    {% if formData['tipo'] == "usuario"%}
+                        <option value="usuario" selected>Usuario</option>
+                        <option value="admin">Administrador</option>
+                        <option value="pendiente">Pendiente</option> 
+                    {% elseif formData['tipo'] == "admin" %} 
+                        <option value="usuario">Usuario</option>
+                        <option value="admin" selected>Administrador</option>  
+                        <option value="pendiente">Pendiente</option> 
+                    {% else %}
+                        <option value="usuario">Usuario</option>
+                        <option value="admin" >Administrador</option>  
+                        <option value="pendiente" selected>Pendiente</option> 
+                    {% endif %}
+
+                    </select>
+
+                </div>
+            {% endif %}
+
+            <div class="formBlock">
+
+                <input type="submit" name="sendUserData" value="Enviar">
+                <input type="hidden" name="checked" value="0">
+                <input type="hidden" name="myOwnData" value="{{formData['myOwnData']}}">
+                <input type="hidden" name="userPhoto" value="{{formData['foto']}}">
+                <input type="hidden" name="userType" value="{{formData['tipo']}}">
+
+                {% if formData['modifyUser'] == 1%}
+                <input type="hidden" name="userNameAdminUpdate" value="{{formData['userName']}}">
+                <input type="hidden" name="userSurnameAdminUpdate" value="{{formData['userSurname']}}">
+                <input type="hidden" name="userEmailAdminUpdate" value="{{formData['userEmail']}}">
+                <input type="hidden" name="modifyUser" value="{{formData['modifyUser']}}">
+                {% endif %}
+
+                {% if formData['createUser'] == 1%}
+                <input type="hidden" name="createUser" value="{{formData['createUser']}}">
+                <input type="hidden" name="createMyOwnUser" value="{{formData['createMyOwnUser']}}">
+                {% endif %}
+
+            </div>
+
+        </form>
+    
+    {% else %}
+        <form action="modificarUsuario.php" method="POST" id="modifyUserForm" enctype="multipart/form-data">
+
+            <div class="formBlock">
+                <h2>Datos del usuario:</h2>
+
+            </div>
+
+            {% if formData['createUser'] != 1%} <!--El admin no puede añadir foto al usuario; se la introducirá el mismo-->
+                <div class="formBlock">
+                    <label for="userImage">Foto:</label>
+                    {% if formData['myOwnData'] == 1%}  
+                        <img src="tmpUsers/{{formData['foto']}}">
+                    {% else %}
+                        <img src="usersProfiles/{{formData['foto']}}">
+                    {% endif %}
+                </div>
+
+                <div class="formBlock">
+                        <input type="file" class="uploadPhoto" name="newUserImage" disabled>
+                </div>
+            {% endif %}
+
+            <div class="formBlockLeft">
+                <span class="error"> * Campos obligatorios</span>
+            </div>
+
+            <div class="formBlockLeft">
+                <label for="userName"><span class="star">*</span>Nombre:</label>
+                <input type="text" id="userName" name="userName" value="{{formData['userName']}}"disabled>
+                
+            </div>
+
+            <div class="formBlockLeft">
+                <label for="userSurname"><span class="star">*</span>Apellidos:</label>
+                <input type="text" id="userSurname" name="userSurname" value="{{formData['userSurname']}}"disabled>
+                
+            </div>
+
+            <div class="formBlockLeft">
+                <label for="userEmail"><span class="star">*</span>Email:</label>
+                <input type="text" id="userEmail" name="userEmail" value="{{formData['userEmail']}}"disabled>
+                
+            </div>
+
+            <div class="formBlockLeft">
+                {% if formData['deleteUser'] != 1%}
+                    {% if formData['createUser'] == 1%}
+                    <label for="newPassword1">Nueva contraseña:</label>
+                    <input type="password" id="newPassword1" name="newPassword1" disabled value="formData['userPassword']">
+                    <input type="password" id="newPassword2" name="newPassword2" disabled value="formData['userPassword']">
+
+                    {% elseif formData['modifyUser'] != 1%}
+                    <label for="newPassword1">Nueva contraseña:</label>
+                    <input type="password" id="newPassword1" name="newPassword1" disabled>
+                    <input type="password" id="newPassword2" name="newPassword2" disabled>
+                    {% endif %}
+                {% endif %}
+
+
+            </div>
+
+            {% if formData['createMyOwnUser'] != 1 and formData['myOwnData'] != 1%}
+            <div class="formBlockLeft">
+        
+                <label for="userRol">Rol del usuario:</label>
+
+                <select name="userRol" disabled>
+
+                {% if formData['tipo'] == "usuario"%}
+                    <option value="usuario" selected>Usuario</option>
+                    <option value="admin">Administrador</option>
+                    <option value="pendiente">Pendiente</option> 
+                {% elseif formData['tipo'] == "admin" %} 
+                    <option value="usuario">Usuario</option>
+                    <option value="admin" selected>Administrador</option>  
+                    <option value="pendiente">Pendiente</option> 
+                {% else %}
+                    <option value="usuario">Usuario</option>
+                    <option value="admin" >Administrador</option>  
+                    <option value="pendiente" selected>Pendiente</option> 
+                {% endif %}
+
+                </select>
+
+            </div>
+        {% endif %}
+
+            <div class="formBlock">
+
+                {% if formData['deleteUser'] == 1%} <!--Vamos a borrar a un usuario-->
+                    <input type="submit" name="deleteUserOK" value="Eliminar usuario">
+                    <input type="hidden" name="deleteUserOKName" value="{{formData['userName']}}">
+                    <input type="hidden" name="deleteUserOKSurname" value="{{formData['userSurname']}}">
+                {% else %}
+                <input type="hidden" name="myOwnData" value="{{formData['myOwnData']}}">
+                    <input type="hidden" name="updateUserName" value="{{formData['userName']}}">
+                    <input type="hidden" name="updateUserSurname" value="{{formData['userSurname']}}">
+                    <input type="hidden" name="updateUserEmail" value="{{formData['userEmail']}}">
+                    <input type="hidden" name="updateUserPassword" value="{{formData['userPassword']}}">
+                    <input type="hidden" name="updateUserRol" value="{{formData['tipo']}}">
+                    
+                {% endif %}
+
+                {% if formData['createUser'] == 1%}
+                <input type="submit" name="createUserData" value="Crear usuario">
+                    {% if formData['createMyOwnUser'] == 1%}
+                    <input type="hidden" name="createMyOwnUser" value="1">
+                    {% endif %}
+                {% endif %}
+
+                {% if formData['createUser'] != 1 and formData['deleteUser'] != 1%}
+                <input type="submit" name="updateUserData" value="Actualizar datos">
+                {% endif %}
+
+                <input type="hidden" name="checked" value="1">
+            </div>
+
+        </form>
+
+    {% endif %}
+{% endblock %}
+
+{% block aside %} {{parent()}} {% endblock %}

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comida sana - {% block title%} {% endblock %} </title>
+    <link rel="stylesheet" type="text/css" href="stylePadre.css">
+    {% block anotherCss%}{% endblock %}        <!--TODOS LAS PÁGINAS COMPARTEN EL CSS DEL PADRE, CON EL FORMATO GENERAL DE LA PÁGINA, Y LUEGO CADA UNA AÑADE EL SUYO ESPECÍFICO-->
+    <meta name="author" content="Sergi Ruiz">
+    <script src="abrircomentarios.js"></script>
+</head>
+<body>
+    <header>
+        <div class="upper">
+            <div class="hamburger"></div>
+
+            <h1>Comida sana para todos los días</h1>
+        </div>
+        
+        <nav>
+           
+            {% block nav %}
+            <a href="portada.php">Inicio</a>
+            <a href="lista.php">Listar recetas</a>
+            <a href="contacto.php">Contacto</a>
+
+            {% if login == 1 %}
+                <a href="crearModificarReceta.php">Añadir nueva receta</a>
+            {% endif %}
+
+            {% if userData['tipo'] == "admin"%}
+            <a href="lista.php?users">Gestión de usuarios</a>
+            <a href="log.php">Log</a>
+            <a href="portada.php?backup=1">Realizar backup</a>
+            <a href="borrarYRestaurarBD.php?deleteDB=1"> Borrar todos los datos</a>
+            <a href="borrarYRestaurarBD.php?restoreDB=1"> Restaurar Base de Datos</a>
+            <a href="lista.php?validateUsers=1"> Validar usuarios </a>
+            {% endif %}
+
+            {% endblock %}
+
+        </nav>
+        
+    </header>
+
+    <div class="center">
+        
+        <main>{% block main %}{% endblock %}</main>
+        <aside>
+        {% block aside %}
+
+            <div class="login">
+                <h1>Login</h1>
+        
+                {% if login == 0%}
+                    <form action="{{filename}}" method="POST" id="loginForm">
+                        <div class="rows">
+                            <label for="user" >Usuario:</label>
+                            <input type="text" placeholder="Usuario" name="user" title="Introduce tu nombre de usuario">
+                            <span class="error">{{loginError['user']}}</span>   
+                        </div>
+                        
+                
+                        <div class="rows">
+                            <label for="password">Clave:</label>
+                            <input type="password" placeholder="Contraseña" name="password" title="Introduce tu contraseña">
+                            <span class="error">{{loginError['password']}}</span>    
+                        </div>
+
+                        <input type="hidden" name="name" value="{{recipe['nombre']}}">
+                        <input type="submit" name="login" value="Login">
+                        
+                    </form>
+
+                    <form action="modificarUsuario.php" method="GET">
+                        <input type="submit" name="createUser" value="Crear usuario">
+                        <input type="hidden" name="createMyOwnUser" value="1">
+
+                    </form>
+                {% else %}
+                    <form action="modificarUsuario.php" method="POST" id="editUserData">
+                        <div class="userData">    
+                            <p><span id="bold">{{userData['nombre']}}</span></p> 
+                        </div>
+                        
+                        <div class="userData">    
+                            <p><span id="bold">Rol:</span> {{userData['tipo']}}</p> 
+                        </div>
+
+                        <div class="userData">    
+                            <img src="usersProfiles/{{userData['foto']}}"> 
+                        </div>
+                     
+                        <div class="userData">
+                            <input type="submit" name="editUser" value="Editar datos">
+                            <input type="hidden" name="myOwnData">
+                        </div>
+                    </form>
+
+                    <form action="{{filename}}" method="POST" id="unloginForm">
+                        <div class="userData">
+                            <input type="submit" name="unlogin" value="Desloguearme">
+                            <input type="hidden" name="name" value="{{recipe['nombre']}}">
+                            
+                        </div>
+                    
+                    </form>
+
+                {% endif %}
+            </div>
+        
+            <div class="ranking">
+                <h1>+ comentadas</h1>
+        
+                <ol class="top3">
+                    <li>1.- {{mostCommented[0]}}</li>
+                    <li>2.- {{mostCommented[1]}}</li>
+                    <li>3.- {{mostCommented[2]}}</li>
+                </ol>
+            </div>
+        
+            <div class="number">
+                <h1>nº recetas</h1>
+        
+                <p>El sitio contiene {{totalRecipes}}     <!--Condicional para poner "receta" o "recetas", en función del número de estas-->
+                    {% if totalRecipes == 1%}
+                        receta 
+                    {% else %}
+                        recetas
+                    {% endif %}</p>
+            </div> 
+            
+        {% endblock %}
+        </aside>
+    </div>
+
+    <footer>
+        
+        <p>© 2020 Tecnologías Web </p>
+        <a href="portada.php?downloadPDF=1">Descargar documentación</a>
+        <p>Sergi Ruiz Sánchez</p>
+
+    </footer>
+</body>
+</html>

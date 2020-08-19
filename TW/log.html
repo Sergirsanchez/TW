@@ -1,0 +1,25 @@
+{% extends "padre.html" %}
+
+{% block title %} Portada {% endblock %}
+{% block anotherCss %}<link rel="stylesheet" type="text/css" href="styleLog.css">{% endblock %}
+
+{% block nav %} {{parent()}} {% endblock %}
+
+{% block main %}
+    <h2>Log del sistema</h2>
+
+    <div class="logTable">
+        {% if (logData['descripcion']|length) > 0%}
+            {%for i in 0..((logData['descripcion']|length)-1) %}
+                <div class="logRow">
+                    <p>{{logData['fecha'][i]}}</p>
+                    <p>{{logData['descripcion'][i]}}</p>
+                </div>
+
+            {% endfor %}
+        {% endif %}
+    </div>
+
+{% endblock %}
+
+{% block aside %} {{parent()}} {% endblock %}

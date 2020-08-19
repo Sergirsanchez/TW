@@ -1,0 +1,85 @@
+main > *{   /*Con esto centramos todos los elementos al centro*/
+    margin: auto;
+    font-style: italic;
+}
+
+main > h1{  /*Formato del mensaje de bienvenida*/
+    font-size: 300%;
+    text-align: center;
+    font-style: normal;
+}
+
+main > p{
+    width: 95%;
+    margin: 2% auto;
+}
+
+main span{  /*Las partes que están en negrita*/
+    font-weight: bold;
+}
+
+main > ol{
+    width: 75%;
+    list-style-type: disc;
+}
+
+main > ol > li{
+    margin-bottom: 2%;
+}
+main > img{ /*Formato de los gifs*/
+    width: 20%;
+    margin-top: 2%;
+    margin-bottom: 2%;
+}
+
+main > .photos{ /*Formato que le vamos a dar al flex que contiene las fotos de las recetas*/
+    display:flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+    /*formato de cada foto en concreto*/
+    main > .photos > img{
+        width: 15%;
+        margin: 2%;
+    }
+
+/*------------------------------------------------MEDIAS (Para hacer la web adaptable) --------------------------------------------*/
+@media(max-width:1440px){
+    main > h1{ 
+        font-size:250%;
+    }
+
+    main > img{
+        width: 25%;
+    }
+
+    /*formato de cada foto en concreto*/
+    main > .photos > img{
+        width: 25%;
+    }
+
+}
+
+@media(max-width:1100px){
+    main > h1{  
+        font-size:200%;
+    }
+    main > img{
+        width: 30%;
+    }
+}
+
+
+@media(max-width: 720px){
+
+    main > img{
+        width: 60%;
+    }
+
+    /*formato de cada foto en concreto*/
+    main > .photos > img{
+        width: 60%;
+    }
+}

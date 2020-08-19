@@ -1,0 +1,131 @@
+{% extends "padre.html" %}
+
+{% block title %} Portada {% endblock %}
+{% block anotherCss %}<link rel="stylesheet" type="text/css" href="styleContacto.css">{% endblock %}
+
+{% block nav %} {{parent()}} {% endblock %}
+
+{% block main %}
+    <h1>Contacto:</h1>
+    <img src="Images/image0.jpg"/> 
+
+    <div class="info">
+        <p><span>Nombre: </span>Sergi Ruiz</p>
+        <p><span>Teléfono: </span>(+34)666 666 666</p>
+        <p><span>Correo: </span>sergirusan@correo.ugr.es</p>
+    </div>
+
+    <div class="FAQ">
+        <p><span> Rincón de las preguntas al creador:</span></p>
+        <p>Sientete libre de preguntar lo que quieras.</p>
+        <p> Ojo: <span>Revisa antes que la pregunta no haya sido ya hecha y respondida</span>
+        </p>
+
+        <div class="commentContainer">
+
+            {% if contact['comments']['autor']|length != 0 %}
+            
+                {% for i in 0..(contact['comments']['autor']|length)-1 %}
+                <div class="comment">
+                    <p>{{contact['comments']['autor'][i]}}</p>
+                    <p>{{contact['comments']['fecha'][i]}}</p>
+                    <p><span>Pregunta: </span>{{contact['comments']['texto'][i]}}</p>
+                    <p><span>Respuesta: </span>(El creador contestará cuando pueda. Sé paciente :) )</p>
+
+                </div>    
+                {% endfor %}
+
+            {% endif %}
+
+        </div>
+
+        <div class="FAQForm">
+            {% if contact['checked'] == false %}
+                
+                <form method ="post" id="notCheckedContact" action="contacto.php">
+                    <span class="error">* Campos requeridos</span>
+
+                    <div class="block">
+                        <label for="author">Nombre:</label>
+                        <input type="text" id="author" name="author" value="{{contact['form']['authorName']}} {{contact['form']['authorSurname']}}" disabled/>
+                    </div>
+
+                    <div class="block">
+                        <label for="email"><span class="error">*</span>Correo:</label>
+                        <input type="text" id="emailContact" name="email" value="{{contact['form']['email']}}" />
+                    </div>
+
+                    <div class="block">
+                        <p><span class="error"id="emailError">{{contact['form']['emailError']}}</span></p>
+                    </div>
+
+                    <div class="block">
+                        <label for="phone">Teléfono:</label>
+                        <input type="text" id="phone" name="phone" value="{{contact['form']['phone']}}"/>
+                    </div>
+
+                    <div class="block">
+                        <p><span class="error" id="phoneError">{{contact['form']['phoneError']}}</span></p>
+                    </div>
+
+                    
+                    <div class="block">
+                        <label for="comment"><span class="error">*</span>Pregunta/Sugerencia:</label>
+                        <textarea id="comment" rows="4" cols="50" name="comment">{{contact['form']['comment']}}</textarea>
+                    </div>
+
+                    <div class="block">
+                        <p><span class="error" id="commentError">{{contact['form']['commentError']}}</span></p>
+                    </div> 
+
+                    <div class="block">
+                        <input type="submit" value="Enviar"> 
+                    </div>
+                    
+                    <input type="hidden" name="OK" value="0">   <!--Es el que nos va a indicar si el formulario está para validar o no-->
+
+                </form>
+
+            {% else %}
+                <form method="POST" id="Checked" action="contacto.php"> <!--PASANDO ESTA VARIABLE AL PHP SABEMOS CUANDO DEBE SALIR EL MENSAJE DE "COMENTARIO ENVIADO"-->
+                    <div class="block">
+                        <label for="author">Nombre:</label>
+                        <input type="text" id="author" name="author" value="{{contact['form']['authorName']}} {{contact['form']['authorSurname']}}" disabled/>
+                    </div>
+
+                    <div class="block">
+                        <label for="email">Correo:</label>
+                        <input type="text" id="email" name="email" value="{{contact['form']['email']}}" disabled/>
+                    </div>
+
+                    <div class="block">
+                        <label for="phone">Teléfono:</label>
+                        <input type="text" id="phone" name="phone" value="{{contact['form']['phone']}}" disabled/>   
+                    </div>
+                    
+                    <div class="block">
+                        <label for="comment">Pregunta/Sugerencia:</label>
+                        <textarea id="comment" name="comment" disabled>{{contact['form']['comment']}}</textarea>
+                    </div>
+
+                    <input type="hidden" name="OK" value="1">
+                    <input type="hidden" name="authorName" value="{{contact['form']['authorName']}}">
+                    <input type="hidden" name="authorSurname" value="{{contact['form']['authorSurname']}}">
+                    <input type="hidden" name="commentText" value="{{contact['form']['comment']}}">
+
+                    <div class="block">
+                        <input type="submit" value="Enviar">
+                    </div>
+    
+                </form>
+            {% endif %}
+
+            {% if contact['sent'] == 1 %}
+                <script language="javascript">alert("Datos enviados correctamente")</script>
+            {% endif %}
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block aside %} {{parent()}} {% endblock %}
